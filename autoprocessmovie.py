@@ -31,7 +31,6 @@ src_path              = config_obj['Preferences']['src_path_override']
 tmdb_url              = 'https://api.themoviedb.org/3/search/movie?'
 omdb_url              = 'http://www.omdbapi.com/?'
 dir_name_regex        = '(.[^\(]*).*([0-9]{4})[ |\)]'
-#source_regex          = '\\b(dvdr|dsr|hdtv|pdtv|vodr|web.?dl|web.?cap|blu.?ray|bdr|ddc|cam|ts|hd.?ts|telesync|pdvd|r5.?(line)?|r5|scr(eener)?|dvdscr(eener)?|bdscr|ppv|tc|telecine|[a-z]*.?rip)\\b'
 source_regex          = '\\b(dvdrip|dvdr|dsr|dsrip|dthrip|dvbrip|hdtv|pdtv|tvrip|hdtvrip|vodrip|vodr|web.?dl|web.?rip|web.?cap|bdrip|brrip|blu.?ray|bdr|ddc|camrip|cam|ts|telesync|pdvd|hdrip|r5.?line|r5|scr|screener|dvdscr|dvdscreener|bdscr|ppv|ppvrip|tc|telecine)\\b'
 media_library_path    = os.path.normpath(media_library_path)
 src_path              = os.path.normpath(src_path)
@@ -117,7 +116,6 @@ def main():
         if not results_found:
             return_json = GetJsonTMDB(name_from_dir, year_from_dir)
             if return_json:
-                #WriteLog(json.dumps(return_json, sort_keys=True, indent=4, separators=(',', ': ')))
                 if (int(return_json['total_results']) > 0):
                     WriteLog("Using results from TMDB")
                     actual_movie_name = return_json['results'][0]['title']
@@ -131,7 +129,6 @@ def main():
         if not results_found:
             return_json = GetJsonOMDB(name_from_dir, year_from_dir)
             if return_json:
-                #WriteLog(json.dumps(return_json, sort_keys=True, indent=4, separators=(',', ': ')))
                 if return_json['Response'] == 'True':
                     if return_json['Type'] == 'movie':
                         WriteLog("Using results from OMDB")
@@ -171,7 +168,6 @@ def main():
                         if ext in media_file_types:
                             WriteLog("{0} Media found: '{1}'".format('-' * 4, f))
                             sample_found = [s for s in src_trailer_regex if re.search(s, base, re.IGNORECASE)]
-                            #if re.search('sample', base):
                             if len(sample_found) > 0:
                                 if use_sample:
                                     WriteLog("{0} Using sample file '{1}'".format('-' * 8, f))
@@ -192,7 +188,6 @@ def main():
                 if media_to_move[1] > 0:
                     os.mkdir(dest_dir)
                     ext = os.path.splitext(media_to_move[0])[1]
-                    #WriteLog(os.path.splitext(media_to_move[0])[0])
                     media_source = GetMediaSourceToProcess(os.path.splitext(media_to_move[0])[0])
                     WriteLog("media_source: {0}".format(media_source))
                     DoCopyMove(media_to_move[0], os.path.join(dest_dir, sanitized_movie_name + str(media_source) + ext))
